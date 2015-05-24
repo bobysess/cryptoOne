@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  group_id: 1
+  user_id: 1
+  encrypted_kGV: MyString
+  admission_date: 2015-04-13
+
+two:
+  group_id: 1
+  user_id: 1
+  encrypted_kGV: MyString
+  admission_date: 2015-04-13

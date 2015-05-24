@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Symkey:</strong>
+  <%= @document.symKey %>
+</p>
+
+<p>
+  <strong>Ownerid:</strong>
+  <%= @document.ownerId %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @document.name %>
+</p>
+
+<p>
+  <strong>Path:</strong>
+  <%= @document.path %>
+</p>
+
+<p>
+  <strong>Uploaddate:</strong>
+  <%= @document.uploadDate %>
+</p>
+
+<p>
+  <strong>Hashcode:</strong>
+  <%= @document.hashcode %>
+</p>
+
+<%= link_to 'Edit', edit_document_path(@document) %> |
+<%= link_to 'Back', documents_path %>

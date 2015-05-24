@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Signorityid:</strong>
+  <%= @signature.signorityId %>
+</p>
+
+<p>
+  <strong>Userid:</strong>
+  <%= @signature.userId %>
+</p>
+
+<p>
+  <strong>Signature:</strong>
+  <%= @signature.signature %>
+</p>
+
+<p>
+  <strong>Encryptedpublickey:</strong>
+  <%= @signature.encryptedPublicKey %>
+</p>
+
+<p>
+  <strong>Signaturedate:</strong>
+  <%= @signature.signatureDate %>
+</p>
+
+<%= link_to 'Edit', edit_signature_path(@signature) %> |
+<%= link_to 'Back', signatures_path %>

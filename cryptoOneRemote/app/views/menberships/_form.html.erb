@@ -1,0 +1,33 @@
+<%= form_for(@menbership) do |f| %>
+  <% if @menbership.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@menbership.errors.count, "error") %> prohibited this menbership from being saved:</h2>
+
+      <ul>
+      <% @menbership.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :userId %><br>
+    <%= f.number_field :userId %>
+  </div>
+  <div class="field">
+    <%= f.label :groupId %><br>
+    <%= f.number_field :groupId %>
+  </div>
+  <div class="field">
+    <%= f.label :encryptedKGV %><br>
+    <%= f.text_field :encryptedKGV %>
+  </div>
+  <div class="field">
+    <%= f.label :admissionDate %><br>
+    <%= f.date_select :admissionDate %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

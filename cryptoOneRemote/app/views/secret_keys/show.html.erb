@@ -1,0 +1,9 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Secretkey:</strong>
+  <%= @secret_key.secretKey %>
+</p>
+
+<%= link_to 'Edit', edit_secret_key_path(@secret_key) %> |
+<%= link_to 'Back', secret_keys_path %>

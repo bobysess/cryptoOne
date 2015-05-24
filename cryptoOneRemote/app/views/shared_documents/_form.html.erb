@@ -1,0 +1,33 @@
+<%= form_for(@shared_document) do |f| %>
+  <% if @shared_document.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@shared_document.errors.count, "error") %> prohibited this shared_document from being saved:</h2>
+
+      <ul>
+      <% @shared_document.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :groupId %><br>
+    <%= f.number_field :groupId %>
+  </div>
+  <div class="field">
+    <%= f.label :documentId %><br>
+    <%= f.number_field :documentId %>
+  </div>
+  <div class="field">
+    <%= f.label :sharingDate %><br>
+    <%= f.date_select :sharingDate %>
+  </div>
+  <div class="field">
+    <%= f.label :encryptedSymKey %><br>
+    <%= f.text_area :encryptedSymKey %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

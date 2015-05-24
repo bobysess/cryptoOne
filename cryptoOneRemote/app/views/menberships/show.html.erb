@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Userid:</strong>
+  <%= @menbership.userId %>
+</p>
+
+<p>
+  <strong>Groupid:</strong>
+  <%= @menbership.groupId %>
+</p>
+
+<p>
+  <strong>Encryptedkgv:</strong>
+  <%= @menbership.encryptedKGV %>
+</p>
+
+<p>
+  <strong>Admissiondate:</strong>
+  <%= @menbership.admissionDate %>
+</p>
+
+<%= link_to 'Edit', edit_menbership_path(@menbership) %> |
+<%= link_to 'Back', menberships_path %>

@@ -1,0 +1,21 @@
+<%= form_for(@secret_key) do |f| %>
+  <% if @secret_key.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@secret_key.errors.count, "error") %> prohibited this secret_key from being saved:</h2>
+
+      <ul>
+      <% @secret_key.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :secretKey %><br>
+    <%= f.text_field :secretKey %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

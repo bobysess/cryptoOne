@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Groupid:</strong>
+  <%= @shared_document.groupId %>
+</p>
+
+<p>
+  <strong>Documentid:</strong>
+  <%= @shared_document.documentId %>
+</p>
+
+<p>
+  <strong>Sharingdate:</strong>
+  <%= @shared_document.sharingDate %>
+</p>
+
+<p>
+  <strong>Encryptedsymkey:</strong>
+  <%= @shared_document.encryptedSymKey %>
+</p>
+
+<%= link_to 'Edit', edit_shared_document_path(@shared_document) %> |
+<%= link_to 'Back', shared_documents_path %>

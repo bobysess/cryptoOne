@@ -1,0 +1,33 @@
+<h1>Listing menberships</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Userid</th>
+      <th>Groupid</th>
+      <th>Encryptedkgv</th>
+      <th>Admissiondate</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @menberships.each do |menbership| %>
+      <tr>
+        <td><%= menbership.userId %></td>
+        <td><%= menbership.groupId %></td>
+        <td><%= menbership.encryptedKGV %></td>
+        <td><%= menbership.admissionDate %></td>
+        <td><%= link_to 'Show', menbership %></td>
+        <td><%= link_to 'Edit', edit_menbership_path(menbership) %></td>
+        <td><%= link_to 'Destroy', menbership, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Menbership', new_menbership_path %>

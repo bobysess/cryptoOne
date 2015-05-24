@@ -1,0 +1,33 @@
+<h1>Listing shared_documents</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Groupid</th>
+      <th>Documentid</th>
+      <th>Sharingdate</th>
+      <th>Encryptedsymkey</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @shared_documents.each do |shared_document| %>
+      <tr>
+        <td><%= shared_document.groupId %></td>
+        <td><%= shared_document.documentId %></td>
+        <td><%= shared_document.sharingDate %></td>
+        <td><%= shared_document.encryptedSymKey %></td>
+        <td><%= link_to 'Show', shared_document %></td>
+        <td><%= link_to 'Edit', edit_shared_document_path(shared_document) %></td>
+        <td><%= link_to 'Destroy', shared_document, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Shared document', new_shared_document_path %>

@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  owner_id: 1
+  owner_info: MyString
+  document_id: 1
+  document_name: MyString
+  document_path: MyString
+  encrypted_symkey: MyString
+  date: 2015-05-01
+
+two:
+  owner_id: 1
+  owner_info: MyString
+  document_id: 1
+  document_name: MyString
+  document_path: MyString
+  encrypted_symkey: MyString
+  date: 2015-05-01

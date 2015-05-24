@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  signority_id: 1
+  user_id: 1
+  signature: MyString
+  encrypted_public_key: MyText
+  signature_date: 2015-04-13
+
+two:
+  signority_id: 1
+  user_id: 1
+  signature: MyString
+  encrypted_public_key: MyText
+  signature_date: 2015-04-13

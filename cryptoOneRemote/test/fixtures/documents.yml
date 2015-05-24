@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  sym_key_id: 1
+  path: MyString
+  name: MyString
+  hashcode: MyString
+  upload_date: 2015-04-13
+
+two:
+  sym_key_id: 1
+  path: MyString
+  name: MyString
+  hashcode: MyString
+  upload_date: 2015-04-13

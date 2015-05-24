@@ -1,0 +1,2 @@
+module AuthorityKeysHelper
+end

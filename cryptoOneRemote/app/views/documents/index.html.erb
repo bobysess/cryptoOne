@@ -1,0 +1,37 @@
+<h1>Listing documents</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Symkey</th>
+      <th>Ownerid</th>
+      <th>Name</th>
+      <th>Path</th>
+      <th>Uploaddate</th>
+      <th>Hashcode</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @documents.each do |document| %>
+      <tr>
+        <td><%= document.symKey %></td>
+        <td><%= document.ownerId %></td>
+        <td><%= document.name %></td>
+        <td><%= document.path %></td>
+        <td><%= document.uploadDate %></td>
+        <td><%= document.hashcode %></td>
+        <td><%= link_to 'Show', document %></td>
+        <td><%= link_to 'Edit', edit_document_path(document) %></td>
+        <td><%= link_to 'Destroy', document, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Document', new_document_path %>

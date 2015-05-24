@@ -1,0 +1,27 @@
+<h1>Listing secret_keys</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Secretkey</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @secret_keys.each do |secret_key| %>
+      <tr>
+        <td><%= secret_key.secretKey %></td>
+        <td><%= link_to 'Show', secret_key %></td>
+        <td><%= link_to 'Edit', edit_secret_key_path(secret_key) %></td>
+        <td><%= link_to 'Destroy', secret_key, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Secret key', new_secret_key_path %>
