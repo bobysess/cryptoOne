@@ -1,0 +1,89 @@
+
+{{ group.name }}
+<!-- menbers --> 
+<h1>add menber in group </h1>
+<form >
+		<select ng-model = "menber" class="form-control" ng-options=" user as user.email for user in trustedUsers">
+		</select>
+		<input type="submit" ng-click="addMenber()" class="btn btn-default" value="Add" />
+
+</form>
+
+<h2> list menbers in group   </h2>
+    <!-- <ul>
+    	<li ng-repeat="menbership in  menberships">
+    		{{menbership.user.firstname}}
+    		{{menbership.user.lastname}}
+    		{{menbership.user.email}}
+    		<button ng-click="removeMenber(menbership)"> Delete </button>
+    	</li>
+    </ul> -->
+    <!--  meneber in this group -->
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+        <th>AdmissionDate</th>
+        <th ng-if ='group.adminId == currentUser.id' ></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="menbership in  menberships">
+        <td>{{menbership.user.firstname}}</td>
+        <td>{{menbership.user.lastname}}</td>
+        <td>{{menbership.user.email}}</td>
+        <td>{{menbership.admissionDate}}</td>
+        <!--only the Admin of the group can remove menbers -->
+        <td><button ng-if ='group.adminId == currentUser.id' class="btn btn-default"  ng-click="removeMenber(menbership)"> Delete </button></td>
+      </tr>
+    </tbody>
+  </table>
+<!-- shared documents -->
+ <form   class="form-horizontal" role="form" >
+   <h2>new shared Documents</h2>
+	<select ng-model = "doc" class="form-control" ng-options=" doc as doc.name for doc in docs" >
+	</select>
+	<input type="submit" ng-click="addSharedDoc()" value="Share" class="btn btn-default" />
+
+ </form>  
+<!-- <h1>list of shared docs (delete)  (download) </h1>
+     <ul>
+     	<li ng-repeat="sharedDoc in sharedDocuments">
+     		{{sharedDoc.document.name}}
+     		{{sharedDoc.document.path}}
+     		{{sharedDoc.document.uploadDate}}
+     		<button ng-click="removeSharedDoc(sharedDoc)"> delete </button>
+     		<a href="/download/" >download</a>
+     	</li>
+     </ul>
+ -->
+<!-- list all shared docs --> 
+<div class="container">
+  <h2>list of shared Documents</h2>
+  <p>The list </p>            
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>owner Name</th>
+        <th>sharingDate</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="sharedDoc in sharedDocuments">
+        <td>{{sharedDoc.document.name}}</td>
+        <td title="{{sharedDoc.owner.firstname}} {{sharedDoc.owner.lastname}}" > {{sharedDoc.owner.email}}</td>
+        <td>{{sharedDoc.sharingDate}}</td>
+        <td>
+          <!--only the owner can delete this document -->
+        	<button ng-if='sharedDoc.owner.id==currentUser.id' type="button" class="btn btn-default" ng-click="removeSharedDoc(sharedDoc)"> Delete </button>
+        	<a href="/download/" class="btn btn-default">download</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

@@ -1,0 +1,31 @@
+<!--<ul> 
+<li ng-repeat="user in users">
+	{{user.firstname}} 
+	{{user.lastname}} 
+	{{ user.email}}
+	<button ng-click="deleteUser(user)"> Delete</button>
+</li>
+</ul> -->
+
+<div class="container">
+  <h2>Untrusted Users</h2>
+  <p>The list </p>            
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in users">
+        <td>{{user.firstname}}</td>
+        <td>{{user.lastname }}</td>
+        <td>{{user.email}}</td>
+        <td><button type="button" class="btn btn-default" ng-click="deleteUser(user)"> delete </button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

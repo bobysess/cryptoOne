@@ -1,0 +1,28 @@
+<div ng-controller="AccountInitializationCtrl">
+  <form novalidate class="css-form">
+  <p>
+    <label  class="control-label">password:</label>
+    <input type="password" ng-model="user.password" class="form-control" placeholder="Enter password" required />
+  </p>
+   <p>
+    <label  class="control-label">confirm password:</label>
+    <input type="password" ng-model="user.passwordConfirmation" class="form-control" placeholder="Confirm password " required />
+  </p>
+  <p>
+    <label  class="control-label">passphrase:</label>
+    <input type="password" ng-model="user.passphrase" class="form-control" required placeholder="Enter passphrase" />
+  </p>
+  <p>
+    <label  class="control-label">confirm passphrase:</label>
+    <input type="password" ng-model="user.passphraseConfirmation" class="form-control"  placeholder="Confirm passphrase" required />
+  </p>
+  <p>
+       <input type="submit" ng-click="initAccount(user)" value="Save"  class="btn"/>
+  </p>
+    <!-- password: <input type="text" ng-model="user.password"  required /><br />
+    password: <input type="text" ng-model="user.password"  required /><br />
+    passphrase: <input type="email" ng-model="user.newPassphrase"  required /><br />
+    passphrase: <input type="text" ng-model="user.newPassphrase" required /><br />
+    <input type="submit" ng-click="initAccount(user)" value="Save" /> -->
+  </form>
+</div>

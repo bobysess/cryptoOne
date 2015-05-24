@@ -1,0 +1,43 @@
+<div >
+  <form novalidate class="form-horizontal" role="form">
+  	<p>
+    	<label class="control-label" >Firstname:</label>
+    	<input type="text" ng-model="user.firstname" required class="form-control" placeholder="Enter firstname"/>
+  	</p>
+  	<p>
+    	<label class="control-label" >Lastname:</label>
+    	<input type="text" ng-model="user.lastname" required class="form-control"  placeholder="Enter lastname"/>
+  	</p>
+  <!--	<p>
+    	<label class="control-label" >Passwordname:</label>
+    	<input type="password" ng-model="user.firstname" required class="form-control" /><br />
+  	</p> -->
+  	<p>
+    	<label class="control-label" for='email' >Email:</label>
+    	<input type="email" ng-model="user.email" required class="form-control" for="email" placeholder="Enter email"/>
+  	</p>
+  	<p>
+    	<label class="control-label"  >Authority:</label>
+    	<input type="checkbox" ng-model="isAuthority" required />
+  	</p>
+  	
+  	<p>
+    	<label class="control-label" >Public Key :</label>
+    	<textarea  ng-model="user.publicKey"  ng-disabled="!isAuthority" class="form-control" required placeholder="Enter public Key"> </textarea>
+  	</p>
+  	<p>						
+    	<input type="submit" nng-click="create(user)" value="Save" class ="btn"/>
+  	</p>
+
+
+   <!--  LastName: <input type="text" ng-model="user.lastname" required /><br />
+    E-mail: <input type="email" ng-model="user.email" required /><br />
+    Password: <input type="text" ng-model="user.password" required /><br />
+    Authority :<input type="checkbox" ng-model="isAuthority"/> <br />
+    Roles: <input type="text" ng-model="user.roles" required /><br /> 
+    Public Key: <textarea ng-model="user.publicKey"  ng-disabled="!isAuthority" ng-required="isAuthority" required ></textarea><br />
+   <!-- Secret Key Id: <input type="text" ng-model="user.secretKeyId" required /><br />-->
+   <!--  <input type="button" ng-click="reset()" value="Reset" />
+    <input type="submit" ng-click="create(user)" value="Save" />  -->
+  </form>
+</div>

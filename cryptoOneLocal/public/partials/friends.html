@@ -1,0 +1,46 @@
+<!-- trusted  User  --> 
+<div class="container">
+  <h2>Trusted Users</h2>
+  <p>The list </p>            
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="signature in mySignatures track by $id(signature)">
+        <td>{{ signature.user.firstname}}</td>
+        <td>{{signature.user.lastname }}</td>
+        <td>{{signature.user.email}}</td>
+        <td><button type="button" class="btn btn-default" ng-click="showUser(signature.user)"> show </button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- untrusted User -->
+<div class="container">
+  <h2>Untrusted Users</h2>
+  <p>The list </p>            
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in untrustedUsers track by $id(user)">
+        <td>{{user.firstname}}</td>
+        <td>{{user.lastname }}</td>
+        <td>{{user.email}}</td>
+        <td><button type="button" class="btn btn-default" ng-click="showUser(user)"> show </button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

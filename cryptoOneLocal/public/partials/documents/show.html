@@ -1,0 +1,49 @@
+<!-- <h1>{{currentShowDoc.name}}<h2>
+<form >
+<select ng-model = "menbership" ng-options=" menbership as menbership.group.name for menbership in myMenberships | filter : filterMenberships">
+</select>
+<input type="submit" ng-click="addSharedDoc()" value="Create" />
+
+</form>
+<h1>  list shared document</h1>
+
+<ul>
+	<li ng-repeat="sharedDoc in sharedDocuments track by $id(sharedDoc)">
+	    {{sharedDoc.group.name}}  
+		{{sharedDoc.document.name}}  
+		{{sharedDoc.document.path}}  
+		{{sharedDoc.document.symkey}} 
+		<button ng-click="removeSharedDoc(sharedDoc)"> delete </button> 
+	</li>
+</ul> 
+<!-- form to create a  new shared document  -->
+<div class="container">
+
+<form class="form-horizontal" role="form" >
+    <h2>Share this document</h2>
+	<select class="form-control" ng-model = "menbership" ng-options=" menbership as menbership.group.name for menbership in myMenberships | filter : filterMenberships">
+	</select>
+	<input type="submit" ng-click="addSharedDoc()" value="Share" class="btn btn-default" />
+</form>
+<!-- list all shared Doc of this document  --> 
+  <h2>list shared documents</h2>
+  <p>The list </p>            
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name of the group</th>
+        <th>Name of the document</th>
+        <th>Shared At</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="sharedDoc in sharedDocuments track by $id(sharedDoc)">
+        <td>{{sharedDoc.group.name}}  </td>
+        <td>{{sharedDoc.document.name}} </td>
+        <td>{{sharedDoc.sharingDate}}</td>
+        <td><button type="button" class="btn btn-default"  ng-click="removeSharedDoc(sharedDoc)" > Delete </button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

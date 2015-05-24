@@ -1,0 +1,81 @@
+  <!DOCTYPE html >
+  <html ng-app ="cryptoOne">
+  <head>
+  	<title> CrpytoOne Local</title>
+  	<meta charset="utf8" />
+  	  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-route.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular-resource.js"></script>
+      <script src="/js/lib/ng-file-upload/ng-file-upload-shim.min.js"></script> <!-- for no html5 browsers support -->
+      <script src="/js/lib/ng-file-upload/ng-file-upload.min.js"></script> 
+      <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+      <script type="text/javascript" src="/js/cryptoOne/test.js"> </script>
+      <script type="text/javascript" src="/js/cryptoOne/services.js"> </script>
+      <script type="text/javascript" src="/js/cryptoOne/filters.js"> </script>
+      <script type="text/javascript" src="/js/cryptoOne/directives.js"> </script>
+      <script type="text/javascript" src="/js/cryptoOne/controllers.js"> </script>
+      <script type="text/javascript" src="/js/cryptoOne/routes.js"> </script>
+      <script type="text/javascript" src="/js/cryptoOne/app.js"> </script>
+      <script type="text/javascript" src="/js/lib/ui-bootstrap-tpls-0.13.0.min.js"> </script>
+      <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+      
+
+  </head>
+  <body  ng-controller="GlobalCtrl">
+<!--  <header> <h1>{{ currentUser.lastname}}</h1> </header>
+  <a href="#/new-user"> create new user</a> admin
+  <a href="#/login"> login </a> hidden
+  <a href="#/groups"> Groups </a> user
+  <a href="#/documents"> Documents </a> user
+  <a href="#/friends"> Friends </a> user
+  <a href="#/account"> Account </a> user
+  <a href="#/users"> Users </a> admin
+  <a href="#/accountinit"> init </a> hidden -->
+
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">CryptoOne</a>
+    </div>
+    <div>
+    <!-- for the  user  -->
+      <ul class="nav navbar-nav" ng-if='currentUser.roles!= roles.ADMIN'>
+        <li class="active"><a href="#/friends">Friends</a></li>
+        <li><a href="#/groups">Groups</a></li>
+        <li><a href="#/documents">Documents</a></li>
+        <li><a href="#/account">My Account</a></li>
+      </ul>
+      <!--  for the admin  -->
+      <ul class="nav navbar-nav" ng-if='currentUser.roles == roles.ADMIN'>
+        <li class="active"><a href="#/users">Users</a></li>
+        <li class="active"><a href="#/new-user">New User</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li ng-if='!currentUser'><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <li ng-if='currentUser'><a href="#/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+    
+    
+    <div ng-view class='container'></div>
+   <!-- Hallo Angular JS lasse uns anfangen zu spielen!
+   <input type="text" ng-model="name">
+   <p ng-show='name'>My name is : {{name}}</p>
+   <ul ng-controller="peopleCtrl">
+   	<li ng-repeat="user in users track by $id(user)">
+          {{user.firstname}} {{ user.email}}
+   	</li>
+   </ul>
+   -->
+
+
+  <!--<footer> <h1>Footer {{roles.ADMIN}}  {{currentUser.roles}}</h1></footer> -->
+  </body>
+  </html>

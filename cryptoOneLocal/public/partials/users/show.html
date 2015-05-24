@@ -1,0 +1,45 @@
+
+<div class="row">
+<p>{{showedUser.firstname}}     {{showedUser.lastname}}    {{showedUser.email}} {{showedUser.id}}</p>
+</div>
+<!---   sign form -->
+<!-- <form >
+<input type='hidden' ng-model="signature.userId" value="userId">
+<input type="submit" ng-click="sign(signature)" value="sign" />
+
+</form> -->
+<div class="row"> 
+	<button ng-click="sign()">  sign </button>
+	<button  ng-click="revoke()">  Revoke  </button>
+</div>
+
+
+<div class="container">
+  <h2>common trusted users</h2>
+  <p>The list </p>            
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in commonTrustedUsers">
+        <td>{{user.firstname}}</td>
+        <td>{{user.lastname }}</td>
+        <td>{{user.email}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!--
+<h2>common trusted users</h2>
+<ul>
+	<li ng-repeat="user in commonTrustedUsers">
+        {{ user.firstname}}   {{user.lastname}}   {{user.email}}   {{user.id}}
+	</li>
+</ul>
+
+-->

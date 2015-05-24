@@ -1,0 +1,57 @@
+redirect by  not existing  pages and by unregistred user. ok
+pass token login for authentification ok 
+resource  in session service ok 
+
+
+passphrase change! ok
+error 
+authority #( isactiv, initialized, hat publicKey, it can not be registred)ok
+signature change the name to value (fabrice)
+user destroy( malschauen)
+after deleting a shared document in group , add the group in option select;(filter to do)
+by Adding a menber in a group check if the new menber  is trusted from all menbers in the group(to d, die signature local hochladen  für die encryption in datase it can be changed!())
+check signature by  get signatures  and signature(todo)
+fault bearbeiten(done)
+filter for the options selects (done)
+login admin (deone )
+authoriy user anlegen (do)
+by inialization authority and own   public key signs(do)
+by initing a account  the user most sign his own public and this from the authority (ok)
+separate  admin pages from user pages(done)
+by page init call most the user on the home page redirected(done)
+message by verifying the signature fehler(ok)
+verify by user update that the both passphrase and passwords are the same(styling)
+remove mysignature and a auhtority signature from sigantures(done)
+remote mymenbership from menbership in a group(ok)
+delete passphrase in new account update  init controller(done)
+when the dataset leer no show(styling)
+signature in create menbership(done)
+delete password by update user(after login is bereit)
+change new passphrase to  (done)
+delete password by logging(to do when the login is in function)
+flash alert;(styling)
+delete signature after adding a new menber;(done)
+logout(done)
+login(done)
+error server(server nicht connected to remote, crypto fehler false passphrase)(-)
+redirect tpo default page(-)
+styling(do)
+fabrice document 
+server erro by false passphrase(-)
+login (-)
+shell script to create the admin user by deployment
+after deleting user 
+
+fabrice(after deleting, after creating, shell, value in signature,user(salt, verifier), get(menbership, signature, sharedDoc), delete all, login )
+
+server error 
+styling 
+after deleting user 
+shell script 
+when the dataset leer is show nothing
+by adding a menber most the show if all trust the new user 
+delete password by user update (after login get)
+boom
+mails to all users
+
+
