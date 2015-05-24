@@ -42,15 +42,17 @@ var errorMsgs = require('../others/error')
       	  if(response.statusCode==200){
 	          session.token=data.token ;
 	          session.user=data.user;
-	          session.publicKey=data.user.publicKey;
-	          // add token authentification to header
-	          if(session.token){ args.headers["Access-Token"]= session.token }
-	          // request secret key
-	          var secretkeyUrl= remoteHost+'/secret_keys/'+data.user.secretKeyId;
-	          client.get(secretkeyUrl, args, function (data, reponse ){
-	                session.secretKey= data.secretKey;
-	          });
-      	    }
+            if(data.user.roles!='Admin'){ // the admin has no public or private key
+    	          session.publicKey=data.user.publicKey;
+    	          // add token authentification to header
+    	          if(session.token){ args.headers["Access-Token"]= session.token }
+    	          // request secret key
+    	          var secretkeyUrl= remoteHost+'/secret_keys/'+data.user.secretKeyId;
+    	          client.get(secretkeyUrl, args, function (data, reponse ){
+    	                session.secretKey= data.secretKey;
+    	          });
+            }
+      	  }
       	  res.status(response.statusCode).json(data); // copy data and status
         }).on('error', function(error){
 		 	console.log("from error handler")

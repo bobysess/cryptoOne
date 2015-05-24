@@ -127,7 +127,7 @@
             if($scope.isAuthority){// the Authority  dont need any initialisation anymore
               $scope.user.isInitialized=true;
               $scope.user.isActiv=true ; 
-              $scope.user.roles=Roles.authority;
+              $scope.user.roles=ROLES.AUTHORITY;
             }
             // do request to create a new user 
             Remote.createUser(user,function (u, rep){
@@ -467,35 +467,39 @@
     /*
        login  
     */
-    controllersModule.controller ('LoginCtrl',[ '$scope','$rootScope','Session','Remote','$location','$http','Trust',function($scope,$rootScope, Session, Remote,$location,$http, Trust){
+    controllersModule.controller ('LoginCtrl',[ '$scope','$rootScope','Session','Remote','$location','$http','Trust','ROLES',function($scope,$rootScope, Session, Remote,$location,$http, Trust,ROLES){
             $scope.credentials ={};
             $scope.login= function(credentials){
               Remote.login(credentials,function( rep, headers){
                 Session.token= rep.data.token ;
                 Session.user = rep.data.user ;
                 $rootScope.currentUser=Session.user;
-                // validate the user signature
-                Trust.validateSignatures(Session.user.id, function(res){
-                   if(res.data){// no problem
-                      console.log("signatures correct public key ")
-                   }else{
-                      console.log('result')
-                      console.log(res)
-                   }
-                })
-
-                console.log("successful logged !");
-                console.log(Session.token);
-                console.log(Session.user);
-              // set token in headers for the future request 
+                // set token in headers for the future request 
                 $http.defaults.headers.common['Access-Token'] =Session.token ;
-              //check if user is initialized
-                if (!Session.user.isInitialized){
-                  $location.path('/accountinit');
-                }else{
-                  $location.path('/friends');
-                }
-              }); 
+                // validate the user signature
+                  if(Session.user.roles == ROLES.ADMIN){
+                      $location.path('/users');
+                  }else{// the admin has neither keypair nor singatures
+                      Trust.validateSignatures(Session.user.id, function(res){
+                         if(res.data){// no problem
+                            console.log("signatures correct public key ")
+                         }else{
+                            console.log('result')
+                            console.log(res)
+                         }
+                      })
+
+                      console.log("successful logged !");
+                      console.log(Session.token);
+                      console.log(Session.user);
+                    //check if user is initialized
+                      if (!Session.user.isInitialized){
+                        $location.path('/accountinit');
+                      }else{
+                        $location.path('/friends');
+                      }
+                  } 
+              });
             }
     }]);
     /*

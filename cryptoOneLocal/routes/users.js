@@ -42,7 +42,10 @@ router.post('/', function(req, res , next){
     req.body.password= crypto.generatePassword();  	 //generate password  and add to user
     var userEmail=req.body.email;  	 // set the user object to the server
   	console.log(req.body);  	 //add the password to the user object
-	defaultRequestHandler(req, res, next, mailer.sendNewUserConfirmationEmail(userEmail,  req.body.password));
+    var beforeRequestCallBack =function(req,args){
+        mailer.sendNewUserConfirmationEmail(userEmail,  req.body.password);
+    }
+	defaultRequestHandler(req, res, next,{beforeRequestCallBack : beforeRequestCallBack} );
 });
 
 // verify siganture 
