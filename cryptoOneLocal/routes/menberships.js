@@ -4,22 +4,22 @@ var defaultRequestHandler= require('./default')
 var crypto = require('../others/crypto');
 var session= require('../others/session')
 var remote = require('../others/remote')
-var errorMgs =  require('../others/error')
+var errorMsgs =  require('../others/error')
 
 
 
 router.get('/',  function(req,res, next ){
-	defaultRequestHandler(req, res, next , {});
+	defaultRequestHandler(req, res, next );
 });
 router.get('/:id',  function(req,res, next ){
-	defaultRequestHandler(req, res, next , {});
+	defaultRequestHandler(req, res, next );
 });
 
 router.put('/:id',  function(req,res, next ){
-	defaultRequestHandler(req, res, next , {});
+	defaultRequestHandler(req, res, next );
 });
 router.delete('/:id',  function(req,res, next ){
-	defaultRequestHandler(req, res, next , {});
+	defaultRequestHandler(req, res, next );
 });
 router.post('/',  function(req,res, next ){
 	// load the user public key ans signature 
@@ -35,23 +35,20 @@ router.post('/',  function(req,res, next ){
 	var groupId = req.body.groupId
 	var passphrase = req.body.passphrase;
 	remote.getSignature(session.user.id, userId, function(signature){ //the public key is contained in the signature object
-		console.log(signature);
-		if(crypto.validSignature(session.publicKey, signature, passphrase ,session.secretKey)){// valid public key
-			var beforeRequestCallback = function(req , args){
-				var encryptedKGV = args.data.encryptedKGV;
+		console.log("menbership"); console.log(crypto.validSignature(session.publicKey, signature, passphrase ,session.secretKey))
+		if(	signature && crypto.validSignature(session.publicKey, signature, passphrase ,session.secretKey)){// valid public key
+				var encryptedKGV = req.body.encryptedKGV;
 				var menberPublicKey= signature.user.publicKey //args.data.menberPublicKey; // public Key of the new menber
-				console.log("passphrase "+passphrase + " secretkey "+session.secretKey + " encryptedKGV "+ encryptedKGV);
 				var decryptedKGV= crypto.RSAdecrypt(passphrase, session.secretKey, encryptedKGV);
-				args.data.encryptedKGV= crypto.RSAencrypt(menberPublicKey, decryptedKGV);
+				req.body.encryptedKGV= crypto.RSAencrypt(menberPublicKey, decryptedKGV);
 				passphrase=null;
-				delete args.data.passphrase; 
-				delete args.data.menberPublicKey
+				//delete args.data.passphrase; 
+				//delete args.data.menberPublicKey
 				delete req.body.passphrase;
-			}
-			defaultRequestHandler(req, res, next , {beforeRequestCallback : beforeRequestCallback});
+			defaultRequestHandler(req, res, next);
 		}else{
 			delete req.body.passphrase;
-			res.status(500).json({ error : errorMsg.wrongSignature})
+			res.status(500).json({ error : errorMsgs.wrongSignature})
 		}
 
 	})

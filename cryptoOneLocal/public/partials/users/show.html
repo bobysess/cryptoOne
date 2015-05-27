@@ -16,8 +16,9 @@
 
 <div class="container">
   <h2>common trusted users</h2>
-  <p>The list </p>            
-  <table class="table table-striped">
+  <p>The list </p>   
+  <h3 ng-if="commonTrustedUsers.length<=0"> leer </h3> 
+  <table class="table table-striped" ng-if="commonTrustedUsers.length>0">
     <thead>
       <tr>
         <th>Firstname</th>

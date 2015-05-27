@@ -5,16 +5,16 @@ var crypto = require('../others/crypto');
 var session= require('../others/session')
 
 router.get('/',  function(req,res, next ){
-	defaultRequestHandler(req, res, next , {});
+	defaultRequestHandler(req, res, next );
 });
 router.get('/:id', function(req,res, next ){
-	defaultRequestHandler(req, res, next , {});
+	defaultRequestHandler(req, res, next );
 });
 router.put('/:id',  function(req,res, next ){
-	defaultRequestHandler(req, res, next , {});
+	defaultRequestHandler(req, res, next );
 });
 router.delete('/:id',  function(req,res, next ){
-	defaultRequestHandler(req, res, next , {});
+	defaultRequestHandler(req, res, next );
 });
 
 //create signature
@@ -25,16 +25,14 @@ router.post('/',  function(req,res, next ){
 	// sign the public key with my private key 
 	// save the signature in the request
 	//delete passphrase
-	var beforeRequestCallback= function(req, args){
-	  var passphrase= args.data.passphrase
-	  var userPublicKey= args.data.userPublicKey; // the public key of the new trusted user
-	  console.log(userPublicKey+ "  "+session.publicKey);
-	  args.data.encryptedPublicKey= crypto.RSAencrypt(session.publicKey, userPublicKey );//the public key ist encryptedPublicKey
-      args.data.value = crypto.sign(passphrase, session.secretKey,userPublicKey );	  
-      delete args.data.passphrase
-      passphrase= null; 
-	}
-	defaultRequestHandler(req, res, next , { beforeRequestCallback : beforeRequestCallback});
+	var passphrase= req.body.passphrase
+	var userPublicKey= req.body.userPublicKey; // the public key of the new trusted user
+	req.body.encryptedPublicKey= crypto.RSAencrypt(session.publicKey, userPublicKey );//the public key ist encryptedPublicKey
+    req.body.value = crypto.sign(passphrase, session.secretKey,userPublicKey );	  
+    delete req.body.passphrase
+    passphrase= null; 
+
+	defaultRequestHandler(req, res, next );
 });
 
 

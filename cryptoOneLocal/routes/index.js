@@ -1,8 +1,10 @@
 
 var express = require('express');
 var router = express.Router();
+var defaultRequestHandler= require('./default')
 var jsrp = require('jsrp');
 var clientJsrp= new jsrp.client();
+var lengthOfVerifier=1024
 // var Client = require('node-rest-client').Client;
 // var client = new Client();
 // var remoteHost= "http://localhost:3000";
@@ -16,10 +18,15 @@ var errorMsgs = require('../others/error')
   router.get('/', function (req, res) {
       res.sendFile('public/index.html');
   });
-
+  //demo download
   router.get('/download/', function (req, res) {
       var file =  'public/test.pdf';
       res.download(file); //
+  });
+
+  //get Authority
+  router.get('/authority', function (req, res,next) {
+      defaultRequestHandler(req, res, next);
   });
   //login
   router.post('/login', function (req, res) {
@@ -34,35 +41,34 @@ var errorMsgs = require('../others/error')
         } 
         var url=remoteHost+req.originalUrl //login url // .replace('/remote','');
         console.log(req.method + '   ' + req.originalUrl);
-        console.log("Token  :"+ req.get("Access-Token"));
         client.registerMethod("doRequest", url , req.method); //login url
         /* */// do request
         client.methods.doRequest(args, function(data, response){
-      	  console.log(response.headers['set-cookies']);
       	  if(response.statusCode==200){
 	          session.token=data.token ;
 	          session.user=data.user;
-            if(data.user.roles!='Admin'){ // the admin has no public or private key
+            if(data.user.roles!='Admin' && data.user.isInitialized){ // the admin has no public or private key
     	          session.publicKey=data.user.publicKey;
     	          // add token authentification to header
     	          if(session.token){ args.headers["Access-Token"]= session.token }
     	          // request secret key
     	          var secretkeyUrl= remoteHost+'/secret_keys/'+data.user.secretKeyId;
     	          client.get(secretkeyUrl, args, function (data, reponse ){
-    	                session.secretKey= data.secretKey;
-    	          });
+    	              session.secretKey= data.secretKey;
+    	          }).on('error', function(error){
+                    res.status(500).json({error : error.noConnectionToRemote})
+                });
             }
       	  }
       	  res.status(response.statusCode).json(data); // copy data and status
         }).on('error', function(error){
-		 	console.log("from error handler")
             res.status(500).json({error : errorMsgs.noConnectionToRemote})
-		  });;
+		    });;
       	    
       	   /*
                  LOGIN WITH REMOTE SECURE PROTOCOL
       	   */
-   //    	    clientJsrp.init({ username: args.data.email , password: args.data.password, length : 1024 }, function() {
+   //    	    clientJsrp.init({ username: args.data.email , password: args.data.password, length : lengthOfVerifier }, function() {
    //  			// Client instance is ready to be used here. 
    //  			//compute A and sent email and A to remote
    //    	    	// receive B and salt from remote 
@@ -82,14 +88,7 @@ var errorMsgs = require('../others/error')
    //  				M=clientJsrp.getProof();
    //  				args.data={M : M , email : email }// M und email 
    //  				client.methods.doRequest(args, function(data, response2){
-   //  					 console.log(data);
-   //  					 console.log("A  :"+ A);
-   //  					 console.log("B  :"+ B);
-   //  					// console.log('client')
-   //  					 //console.log(clientJsrp.getSharedKey());
-
    //  					 res.status(response2.statusCode).json(data);
-
    //  				})
    //  			});
 			// });
@@ -101,9 +100,19 @@ var errorMsgs = require('../others/error')
   //logout
   router.get('/logout', function (req, res, next) {
       //res.sendFile('public/index.html');
-      console.log("Logout ");
-      defaultRequestHandler(req,res,next, {});
-      res.json({error : "logout"});
+      defaultRequestHandler(req,res,next);
   });
+  /*
+      
+      BOOM 
+
+  */
+
+  router.delete('/all', function(req, res, next){
+      defaultRequestHandler(req,res,next);
+
+  });
+
+  
 
   module.exports = router;

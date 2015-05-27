@@ -11,15 +11,12 @@
     module.exports={
     // send a email  to all users
                  sendAEmailToAllUsers : function(users, msg , title){
-                    // to implment
-
                 },
     // send the new user email with his init password
                     sendNewUserConfirmationEmail : function (userMail,password){
                     var email = userMail ; 
                     var msg   = "willkommen <br> Password : "+ password;
                     var title = "Willkommen in  CryptoOne";
-                    console.log("email  : "+ email + " msg  : "+ msg+" title  : "+ title);
                     this.sendEmail(email , msg, title);
                 },
                 // Utils

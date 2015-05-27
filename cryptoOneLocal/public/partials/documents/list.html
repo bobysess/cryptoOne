@@ -37,8 +37,10 @@
 <!-- list all docs --> 
 <div class="container">
   <h2>list of group</h2>
-  <p>The list </p>            
-  <table class="table table-striped">
+  <p>The list </p>       
+
+  <h3 ng-if="myDocuments.length<=0"> leer </h3>   
+  <table class="table table-striped" ng-if="myDocuments.length>0">
     <thead>
       <tr>
         <th>Name</th>

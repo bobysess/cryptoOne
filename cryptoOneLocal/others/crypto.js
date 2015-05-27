@@ -13,33 +13,28 @@
 
 	generateKeypair : function (passphrase){
 
-	    //var   keypair =ursa.generatePrivateKey(1024);
 	    var   keypair = new  rsa({b : 1024})
 	    return {
 	    	  secretKey : this.AESencrypt(passphrase , keypair.exportKey('pkcs1-private-pem')),
-	    	  publicKey : keypair.exportKey('pkcs1-public-pem')//keypair.toPublicPem('utf8')
-	     }
+	    	  publicKey : keypair.exportKey('pkcs1-public-pem')
+	    	}
 	},
 
 	RSAencrypt : function (  public_key , text){
 
-	     var publicKey = new rsa(public_key)//'pkcs1-public-pem')//ursa.createPublicKey(publicKey, 'utf8');
+	     var publicKey = new rsa(public_key);
 	     var encrypted=publicKey.encrypt(text,'base64','utf8');
 	     return encrypted ;
 	},
 
 	RSAdecrypt : function(passphrase, secret_Key , text){
 		try{// fire a fehler by wrong passphrase
-				console.log(passphrase);
-		 		console.log(secret_Key)
 		 		var privateKey= this.AESdecrypt(passphrase, secret_Key);
 			 }catch(err){
-		 		//console.log(err);
 		 		throw new Error(errorMsgs.wrongPassphrase);
 		  	}
 		 	//
-		 privateKey= new rsa(privateKey)//,'pkcs1-private-pem');
-	     //secretKey =//ursa.createPrivateKey(secretKey);
+		 privateKey= new rsa(privateKey)
 	     var  decrypted = privateKey.decrypt(text, 'utf8', 'base64');
 	     return decrypted;
 	},
@@ -48,7 +43,6 @@
 		try{ // fire a fehler by wrong passphrase
 				var  privateKey=this.AESdecrypt(passphrase, secretKey)
 			 }catch(err){
-		  		//console.log(err);
 		  		throw new Error(errorMsgs.wrongPassphrase)
 		 	}
 		 	//
@@ -91,10 +85,6 @@
 	validSignature : function( publicKey, signature , passphrase, secretKey){ // here is signature a signature  object
         var userPublicKey= signature.user.publicKey;
         if(secretKey && passphrase){
-        	console.log("validation");
-        	console.log(publicKey)
-        	console.log(passphrase)
-        	console.log(secretKey)
           if(userPublicKey != this.RSAdecrypt(passphrase, secretKey, signature.encryptedPublicKey)){
           	return false
           }
@@ -115,14 +105,5 @@
 		 validSignature(session.publicKey, signature, session.secretKey, passphrase)
 
 	}
-
-
-    // hash
-    // valid signature 
-        // decrypt my private key with my passphrase 
-        // decrypt the encrypted public key and compare with the user.publicKey
-        // sign the public key with the private key and compare with the signature
-        //delte passphrase
-    // valid signatures
 
 	}

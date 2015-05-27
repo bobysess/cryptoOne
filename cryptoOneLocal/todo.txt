@@ -48,10 +48,18 @@ server error
 styling 
 after deleting user 
 shell script 
-when the dataset leer is show nothing
-by adding a menber most the show if all trust the new user 
+when the dataset leer is show nothing (-)
+by adding a menber most the show if all trust the new user (-)
 delete password by user update (after login get)
 boom
-mails to all users
+mails to all users ( - )
+fix communs users (who trusts this user)(-)
+frage to proof(check if all signatures are correct before  by loading it)
+by create user, calculate the salt and the verifier of the generated password!(-)
+remote console.log()
+length of salt and verifier(-)
+passphrase by login and update of uninitialized users remove(-)
+remove und initialized user, by show all users (-)
+
 
 

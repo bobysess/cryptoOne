@@ -31,7 +31,7 @@
 						 GroupSharedDocument :$resource('/groups/:groupId/shared_documents/:id'),
 						 UserSharedDocument : $resource('/users/:ownerId/shared_documents/:id'),
 						 // special users 
-						 Authority : function () {return $http.get('/authority/')},
+						 Authority : function (callback) { return  $http.get('/authority/').then(callback)},
 
 						 //Upload : $http.post('documents/:docId/upload/'),
 						 Download : function(){ return $http.get('/download')},
@@ -51,18 +51,16 @@
 					return{
 						// web of trust utils methods
 						 validateSignatures : function( userId, callback){ 
-						 	var data ={}
+						 	var data ={};
 						 	if(data.passphrase= window.prompt("passphrase :")){
 						 		var url = '/users/'+userId+'/validatesignatures'
 						 		return $http.post(url,data).then(callback);
 						 	}
-						 } ,
-						 trust : function(userId, otherUserId){
-						 	var data ={}
-						 	if(data.passphrase= window.prompt("passphrase :")){
+						 },
+						 trust : function(userId, otherUserId ,callback){
 						 		var url='/users/'+userId+'/trust/'+otherUserId
-						 		return $http.post(url,data).then(callback)
-						 	}
+						 		//var data ={passphrase : passphrase}
+						 		return $http.post(url).then(callback)
 						 }
 
 					}
@@ -117,12 +115,22 @@
 					     },
 					     //get User  
 					     getUser : function(userId, callback){
-					     	Api.User.get({id : userId}).$promise.then(callback);
+					     		Api.User.get({id : userId}).$promise.then(callback);
+					     },
+					     deleteUser :function(userId, callback){
+					     	if(window.confirm("Sicher ?")){
+					     		Api.User.delete({id : userId}).$promise.then(callback);
+					     	}
 					     },
 					     updateUser : function(user, callback){
-					     	if (user.oldPassphrase=window.prompt("passphrase :")){
+					     	if (user.isInitialized){  // request the passphrase
+					     	 	if (user.oldPassphrase=window.prompt("passphrase :")){
+					     			Api.User.update({id : user.id}, user).$promise.then(callback);
+					     	 	}
+					     	}else{
 					     		Api.User.update({id : user.id}, user).$promise.then(callback);
 					     	}
+					     	
 					     },
 					     createUser : function(user, callback){
 					     	Api.User.save(user).$promise.then(callback);
@@ -156,10 +164,14 @@
 					     	Api.UserGroup.query({adminId : userId }).$promise.then(callback)
 					     },
 					     // create signature 
-					     createSignature : function(signority, user, callback){
+					     createSignature : function(signority, user, callback, passphrase){
 					        //signority and  user are users objects
 						    var signature = new Api.Signature();
-						    if(signature.passphrase=window.prompt("passphrase :")){    
+						    signature.passphrase= passphrase
+						    if(!signature.passphrase){ 
+						    	signature.passphrase=window.prompt("passphrase :")
+						    }   
+						    if(signature.passphrase){
 						        signature.signorityId =signority.id ; 
 						        signature.userId = user.id;
 						        //signature.value= user.publicKey;
@@ -254,7 +266,7 @@
 			        	},
 			        // authrity 
 			            authority : function(callback){
-			            	Api.Authority.then(callback);
+			            	return Api.Authority(callback);
 			            },
 			       // login logout 
 				        login : function(credentials, callback){

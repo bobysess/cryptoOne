@@ -54,8 +54,9 @@
         <li class="active"><a href="#/new-user">New User</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li ng-if='currentUser'><a href="#/account"> {{currentUser.email}} --> {{currentUser.id}}</a></li>
         <li ng-if='!currentUser'><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-        <li ng-if='currentUser'><a href="#/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+        <li ng-if='currentUser'><a  ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
       </ul>
     </div>
   </div>

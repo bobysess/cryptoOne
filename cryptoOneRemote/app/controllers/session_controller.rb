@@ -82,6 +82,10 @@ class SessionController < ApplicationController
 
   end
 
+  def boom
+     render :status=> 500,  :json => "{ boom : 'BOOM'}";
+  end
+
 end
 
 

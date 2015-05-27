@@ -19,7 +19,8 @@
     	</li>
     </ul> -->
     <!--  meneber in this group -->
-  <table class="table table-striped">
+  <h3 ng-if="menberships.length<=0"> leer </h3> 
+  <table class="table table-striped" ng-if="menberships.length>0">>
     <thead>
       <tr>
         <th>Firstname</th>
@@ -63,7 +64,8 @@
 <div class="container">
   <h2>list of shared Documents</h2>
   <p>The list </p>            
-  <table class="table table-striped">
+  <h3 ng-if="menberships.length<=0"> leer </h3> 
+  <table class="table table-striped" ng-if="menberships.length>0">
     <thead>
       <tr>
         <th>Name</th>

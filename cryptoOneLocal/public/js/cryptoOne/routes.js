@@ -56,10 +56,6 @@ routesModule.config(['$routeProvider',  function($routeProvider){
 // unlogged users have to be redirected  to the login page
 .run(function(Session, $location, $rootScope) { 
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
-       console.log(current);
-       console.log(next);
-       console.log(event); 
-       console.log("route starts to change!")
       if (Session.user == null) {
         // no logged user, redirect to /login
         if ( next.templateUrl === "partials/login.html") {

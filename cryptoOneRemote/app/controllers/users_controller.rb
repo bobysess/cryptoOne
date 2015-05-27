@@ -42,15 +42,11 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
+
+       @user.update(user_params)
+       render :json => @user.to_json
+
+
   end
 
   # DELETE /users/1
@@ -71,9 +67,10 @@ class UsersController < ApplicationController
   # GET  /authority
   def get_authority
      @user = User.find_by_roles('Authority')
-     respond_to do |format|
-       format.json { head :no_content }
-     end
+     #respond_to do |format|
+      # format.json { head :no_content }
+     #end
+    render :json => @user.to_json({})
   end
 
   private

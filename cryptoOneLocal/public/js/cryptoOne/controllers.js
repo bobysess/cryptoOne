@@ -15,7 +15,7 @@
               Remote.listAllUsers(function(users, rep){
                 $scope.untrustedUsers= users.filter(function(user){
                   //remove current user  auhtority and admin 
-                  if(user.id == Session.user.id || user.roles == ROLES.AUTHORITY || user.roles == ROLES.ADMIN ){
+                  if(user.id == Session.user.id || user.roles == ROLES.AUTHORITY || user.roles == ROLES.ADMIN || !user.isInitialized ){
                     return false 
                   }else{
                     return true 
@@ -41,7 +41,7 @@
        User Show Controller
     */
 
-    controllersModule.controller ('ShowUserCtrl',[ '$scope','Remote','Session','$routeParams','$location',function($scope,Remote, Session,$routeParams,$location){
+    controllersModule.controller ('ShowUserCtrl',[ '$scope','Remote','Session','$routeParams','$location','Trust',function($scope,Remote, Session,$routeParams,$location,Trust){
           var userId  =$routeParams.id ;
           //var signatureId = $routeParams.signId ;
           $scope.mySignatures=[];
@@ -51,38 +51,35 @@
           // get showed users 
           Remote.getUser( userId, function(user){
             $scope.showedUser  = user ; 
+               //COMMON users between the showed user und the current logged user
+              // list my signature
+                Remote.listOfUserSignatures(Session.user.id, function(signs, rep){
+                  $scope.mySignatures= signs;
+                  // search the signature of the current showed user
+                  for(var i =0 ;i< $scope.mySignatures.length; i++){
+                    if($scope.mySignatures[i].user.id == userId){
+                      $scope.signatureFromCurrentUser= $scope.mySignatures[i];
+                      break ;
+                    }
+                  }
+                  //common trusted users( my trusted Users, who trust the new users)
+                    $scope.mySignatures.forEach(function(signature){
+                      Trust.trust(signature.user.id, $scope.showedUser.id, function(result){
+                        if(result.data.isTrusted && signature.user.id !=$scope.showedUser.id ){// 
+                          $scope.commonTrustedUsers.push(signature.user)
+                        }
+                      });
+                    });                
+                 //}
+                  
+                });
           });
-        //COMMON users between the showed user und the current logged user
-        // list my signature
-          Remote.listOfUserSignatures(Session.user.id, function(signs, rep){
-            $scope.mySignatures= signs;
-            // search the signature of the current showed user
-            //$scope.signatureFromCurrentUser =$scope.findDataByIdInDataset($scope.mySignatures, signatureId);
-            for(var i =0 ;i< $scope.mySignatures.length; i++){
-              if($scope.mySignatures[i].user.id == userId){
-                $scope.signatureFromCurrentUser= $scope.mySignatures[i];
-                break ;
-              }
-            }
-          });
-        //other user signatures
-          Remote.listOfUserSignatures(userId, function(signs, rep){
-            $scope.otherUserSignatures= signs;
-        //  merge both  Array of trusted users
-            $scope.mySignatures.forEach(function(signatureA){
-              $scope.otherUserSignatures.forEach (function( signatureB){ // from other user
-                if (signatureA.user.id == signatureB.user.id ){
-                  $scope.commonTrustedUsers.push(signatureA.user);
-                }
-              });
-            });
-          });
+        
+
         // add signature (sign)  
           $scope.sign = function (){ 
             Remote.createSignature(Session.user, $scope.showedUser ,function (signature, rep){
-              console.log (signature.id);
               console.log ("new Signature  Success");
-              console.log(signature);
               $location.path('/friends');
             });
           }
@@ -105,8 +102,8 @@
             $scope.users= users; // all users
           });
          // delete user
-          $scope.delete= function(user){
-            Remote.deleteUser(user, function(rep){
+          $scope.deleteUser= function(user){
+            Remote.deleteUser(user.id, function(rep){
               console.log("user deleted");
               $scope.removeFromView($scope.users, user);
             })
@@ -131,7 +128,7 @@
             }
             // do request to create a new user 
             Remote.createUser(user,function (u, rep){
-              console.log("id :" + u.id);
+              console.log(" the new users was successfull created");
               $location.path('/users');
             });
           }
@@ -155,7 +152,7 @@
           // list get list from users 
           Remote.listOfUserGroups(Session.user.id,function(groups){
               $scope.myGroups=groups;
-                  //console.log( $scope.myGroups);
+
           });
           //add a new  group
           $scope.groupName ;
@@ -193,7 +190,7 @@
 
     */
 
-    controllersModule.controller ('ShowGroupCtrl', [ '$scope', 'Remote', '$routeParams', 'Session',function($scope, Remote, $routeParams, Session ){
+    controllersModule.controller ('ShowGroupCtrl', [ '$scope', 'Remote', '$routeParams', 'Session','Trust',function($scope, Remote, $routeParams, Session,Trust ){
           	//$scope.group = { name : "mygroup "};
             var groupId = $routeParams.id ;
             $scope.myMenbership;// here will be save the KGV to share document in this group
@@ -251,19 +248,39 @@
           	}) 
      
        // add new menber
-            $scope.menber ;
+            $scope.menber ; // menber is a user Object
             $scope.addMenber= function(){
               //var user= $scope.findDataByIdInDataset($scope.trustedUsers, $scope.MenberId);
-              // check if all users in this group  trusts the  new menberS
-              Remote.createMenbership($scope.group,$scope.menber , function(menbership, reponse){
-                // menber is a user object 
-                // alert successful adding of newmwnber7
-                console.log("new Menber successfull added !");
-                $scope.menberships.push(menbership);
-                $scope.removeFromView($scope.trustedUsers, $scope.menber );
-                // reset the  new menber object 
-                $scope.menber=null;
-              })
+              // check if all users in this group  trusts the  new menberS 
+              var numberOfTrustingsMenbers=0 //  number of menbers, who trusts the new user
+              //var passphrase; 
+              for(var i =0;i < $scope.menberships.length ; i++){
+                  Trust.trust($scope.menberships[i].user.id, $scope.menber.id,function(result){ // result content true or false
+                      if(result.data.isTrusted ){// if trusts 
+                         numberOfTrustingsMenbers ++; 
+                       }else{
+                         console.log("there is some users, who dont trusts the new Menber");
+                         //break;  // a  user dont trust the new user
+                       }
+                       // check if the number of users, who trusts the new user equals the number of menbers in this group
+                       if(numberOfTrustingsMenbers== $scope.menberships.length){
+                           // add the new  menbers 
+                           Remote.createMenbership($scope.group,$scope.menber , function(menbership, reponse){
+                              // menber is a user object 
+                              // alert successful adding of newmwnber7
+                              console.log("new Menber successfull added !");
+                              $scope.menberships.push(menbership);
+                              $scope.removeFromView($scope.trustedUsers, $scope.menber );
+                              // reset the  new menber object 
+                              $scope.menber=null;
+                            });
+                       }
+                       
+
+                  }); 
+                  
+              };
+              
             }
     	  // delete menber 
     	      $scope.removeMenber = function (menbership){
@@ -276,7 +293,6 @@
 
     	  // delete shared File 
     	      $scope.removeSharedDoc = function(sharedDoc){
-              console.log("hello from shared docs")
               Remote.deleteSharedDocument(sharedDoc, function(rep){
                 // remove from list of shared document 
                 // add in list of select option for shared document 
@@ -288,7 +304,6 @@
        //add shared Document 
             $scope.doc , 
             $scope.addSharedDoc= function(){
-           //var doc= $scope.findDataByIdInDataset($scope.docs, $scope.docId);
               Remote.createSharedDocument( $scope.doc , $scope.myMenbership,function(sharedDoc, reponse){
               // alert successful adding of newmwnber7
                 console.log("new shared successfull added !");
@@ -315,7 +330,6 @@
           	$scope.documents; 
             $scope.myDocuments=[];
             Remote.listOfUserDocuments( Session.user.id, function ( documents, rep){
-              console.log(documents);
               $scope.myDocuments=documents;
             });
     	   // new document
@@ -363,20 +377,11 @@
             // list shared 'documents
             Remote.listOfDocumentSharedDocuments(documentId , function(sharedDocs, rep){
               $scope.sharedDocuments =sharedDocs;
-              console.log($scope.sharedDocuments );
             });
             // list of group , where to share the document
             $scope.myMenberships=[]; 
             Remote.listOfUserMenberships(Session.user.id ,function(menberships, rep){
-              console.log(menberships);
               $scope.myMenberships=menberships; // group infos are in  menberships
-             //  $scope.sharedDocuments.forEach(function(sharedDoc){ 
-             //    for(var i=0; i< $scope.myMenberships.length ; i++){
-             //      if(sharedDoc.group.id == $scope.myMenberships[i].group.id){
-             //        $scope.myMenberships.splice(i, 1);
-             //     }
-             //   };
-             // }); 
             });
       // delete  shared document 
             $scope.removeSharedDoc = function (sharedDoc){
@@ -386,7 +391,6 @@
                 console.log ("delete successfull sharedDocument"); 
                 $scope.removeFromView($scope.sharedDocuments, sharedDoc); // remove from view
                 console.log($scope.allMenberships);
-                //$scope.myGroups.push(sharedDoc.group);
               })
             }
       //add shared Document 
@@ -397,7 +401,7 @@
                   console.log ("shared docuement successfull uploaded");
                   console.log ( sharedDoc );
                   $scope.sharedDocuments.push(sharedDoc); // add in view
-                  $scope.removeFromView($scope.myMenberships, $scope.menbership)// remove from options select
+                  //$scope.removeFromView($scope.myMenberships, $scope.menbership)// remove from options select
                   $scope.menbership=null ; 
                 });
               }else{
@@ -406,7 +410,7 @@
             };
         // check if  the document is already in a  group  shared
             $scope.isShared=function(menbership){ // the group are already in menbership contained
-              for(var i=0; $scope.sharedDocuments.length;i++ ){
+              for(var i=0; i<$scope.sharedDocuments.length;i++ ){
                 if ($scope.sharedDocuments[i].group.id == menbership.group.id ){
                   return true ;
                   break;
@@ -429,7 +433,7 @@
               delete $scope.user.passwordConfirmation
               Remote.updateUser($scope.user, function(rep){
                 console.log(" It was successfull uploaded!") ;
-                $location.path("/account")
+                $location.path("/friends")
               });
             };
     }])
@@ -439,29 +443,35 @@
     */
 
 
-    controllersModule.controller('AccountInitializationCtrl',['$scope','Session','Remote','$location', function($scope,Session, Remote,$location){
+    controllersModule.controller('AccountInitializationCtrl',['$scope','Session','Remote','$location','$rootScope', function($scope,Session, Remote,$location,$rootScope){
             $scope.user=Session.user;
             $scope.initAccount= function(user){
               //delete passphrase confiramtion and password confirmation
               delete user.passphraseConfirmation
               delete user.passwordConfirmation
               // send the user object  update with PUT
-              Remote.updateUser( user, function(reponse){
+              var passphrase= user.passphrase
+              Remote.updateUser( user, function(response){
+                //set the public key and the secret key id
+                console.log(response) 
+                Session.user.publicKey= response.publicKey
+                Session.user.secretKeyId= response.secretKeyId;
                 //sign own publicKey
                 Remote.createSignature(Session.user, Session.user, function(signature){
                    // sign Auhtoriy publicKey
                     console.log(" the own  public was  successfull  signed! ");
-                  Remote.authority(function(authority){
+                  Remote.authority(function(data){
+                    var authority= data.data;
+                    console.log(authority);
                     Remote.createSignature(Session.user, authority,function(signatureAuthority){
                       console.log("The authority public key  was  successfull  signed! ");
-                      console.log("initialization !");
-                      $location.path("/friends");
-                    })
+                      console.log("initialization was successfull !");
+                      $rootScope.logout();
+                      $location.path("/login");
+                    },passphrase)
                   })
-                })
-                // console.log("initialization !");
-                // $location.path("/friends");
-              });   
+                },passphrase)
+              },passphrase);   
             }
        }]);
     /*
@@ -480,22 +490,20 @@
                   if(Session.user.roles == ROLES.ADMIN){
                       $location.path('/users');
                   }else{// the admin has neither keypair nor singatures
-                      Trust.validateSignatures(Session.user.id, function(res){
-                         if(res.data){// no problem
-                            console.log("signatures correct public key ")
-                         }else{
-                            console.log('result')
-                            console.log(res)
-                         }
-                      })
-
-                      console.log("successful logged !");
-                      console.log(Session.token);
-                      console.log(Session.user);
+                      
                     //check if user is initialized
                       if (!Session.user.isInitialized){
                         $location.path('/accountinit');
                       }else{
+                        Trust.validateSignatures(Session.user.id, function(res){
+                            if(res.data){// no problem
+                              console.log("signatures correct public key ")
+                            }else{
+                              console.log(res)
+                            }
+                        })
+
+                        console.log("successful logged !");
                         $location.path('/friends');
                       }
                   } 
@@ -506,14 +514,23 @@
             // get
 
     */
-    controllersModule.controller('GlobalCtrl' ,['$scope','$rootScope','Session','ROLES', function($scope,$rootScope ,Session, ROLES){
+    controllersModule.controller('GlobalCtrl' ,['$scope','$rootScope','Session','ROLES','$location', function($scope,$rootScope ,Session, ROLES,$location){
           // helper
+          // logout 
+            $rootScope.logout =function(){
+                Session.user=null
+                Session.token=null
+                $rootScope.currentUser=null
+                $location.path('/login')
+            }
+
+
+            //helper
             $rootScope.currentUser = Session.user;
             $rootScope.roles = ROLES;
             $scope.removeFromView  = function (dataset , data){
               for( var i =0 ;i< dataset.length ; i++){
                 if ( dataset[i].id == data.id){
-                  console.log(data); 
                   dataset.splice(i, 1);
                   break ;
                 }
@@ -537,6 +554,7 @@
                 return true ;
               }
           }
+          
 
     }]); 
     // constants

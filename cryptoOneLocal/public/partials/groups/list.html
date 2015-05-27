@@ -18,10 +18,11 @@
 </div>
 
 <!-- list all group --> 
+<h3 ng-if="myGroups.length<=0"> leer </h3>  
 <div class="container">
   <h2>list of group</h2>
   <p>The list </p>            
-  <table class="table table-striped">
+  <table class="table table-striped" ng-if="myGroups.length>0">
     <thead>
       <tr>
         <th>Name</th>

@@ -17,8 +17,15 @@ module.exports={
 			args.headers["Access-Token"]=session.token; //set token
      		client.get(url, args, function(data, response){
      			// check if the user the reponse is correct 
-     			callback(data.publicKey) // the data are a user object
+     			var publicKey = data.publicKey // the data are a user object
+     			if (publicKey){
+     				callback(publicKey) // the data are a user object
+     			}else{
+     				callback(null) // the data are a user object
+     			}
 
+			}).on('error', function(error){
+				res.status(500).json({error : error.noConnectionToRemote})
 			});
 	    },
 	    getMenbership : function( groupId, userId , callback){
@@ -28,9 +35,15 @@ module.exports={
      		client.get(url, args, function(data, response){
      			// check if the user the reponse is correct
      			menbership=data[0] 
-     			callback(menbership) // the data are a user object
-
-			})
+     			if (menbership){
+     				callback(menbership) // the data are a user object
+     			}else{
+     				callback(null) // the data are a user object
+     			}
+     			//callback(menbership) // the data are a user object
+			}).on('error', function(error){
+				res.status(500).json({error : error.noConnectionToRemote})
+			});
 	    },
 	    getSignature : function( signorityId, userId , callback){
        //set url 
@@ -39,10 +52,16 @@ module.exports={
      		client.get(url, args, function(data, response){
      			// check if the user the reponse is correct 
      			signature=data[0]
-     			console.log(data);
-     			callback(signature) // the data are a user object
+     			if (signature){
+     				callback(signature) // the data are a user object
+     			}else{
+     				callback(null) // the data are a user object
+     			}
+     			//callback(signature) // the data are a user object
 
-			})
+			}).on('error', function(error){
+				res.status(500).json({error : error.noConnectionToRemote})
+			});
 	    },
 	    getSharedDocument : function( groupId, docId , callback){	
        //set url 
@@ -51,16 +70,28 @@ module.exports={
      		client.get(url, args, function(data, response){
      			// check if the user the reponse is correct 
      			sharedDoc=data[0]
-     			callback(sharedDoc) // the data are a user object
-
-			})
+     			if (sharedDoc){
+     				callback(sharedDoc) // the data are a user object
+     			}else{
+     				callback(null) // the data are a user object
+     			}
+			}).on('error', function(error){
+				res.status(500).json({error : error.noConnectionToRemote})
+			});
 	    },
 	    getSignatures : function(userId, callback){
 	    	args.headers["Access-Token"]=session.token; //set token
 	    	var url = remoteHost+'/users/'+userId+'/signatures';
 	    	client.get(url, args, function(data, response){
-	    		callback(data);
-	    	})
+	    		if (data){
+     				callback(data) // the data are a user object
+     			}else{
+     				callback(null) // the data are a user object
+     			}
+	    		
+	    	}).on('error', function(error){
+				res.status(500).json({error : error.noConnectionToRemote})
+			});
 	    }
 
 	    // get user signatures

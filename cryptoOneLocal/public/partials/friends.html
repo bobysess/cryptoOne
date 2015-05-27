@@ -1,8 +1,9 @@
 <!-- trusted  User  --> 
 <div class="container">
   <h2>Trusted Users</h2>
-  <p>The list </p>            
-  <table class="table table-striped">
+  <p>The list </p>   
+   <h3 ng-if="mySignatures.length<=0"> leer </h3>         
+  <table class="table table-striped" ng-if="mySignatures.length>0">
     <thead>
       <tr>
         <th>Firstname</th>
@@ -24,8 +25,10 @@
 <!-- untrusted User -->
 <div class="container">
   <h2>Untrusted Users</h2>
-  <p>The list </p>            
-  <table class="table table-striped">
+  <p>The list </p> 
+
+  <h3 ng-if="untrustedUsers.length<=0"> leer </h3> 
+  <table class="table table-striped" ng-if="untrustedUsers.length>0">
     <thead>
       <tr>
         <th>Firstname</th>
