@@ -82,19 +82,13 @@
 		decryptedText += decipher.final('utf8');
 		return decryptedText;
 	},
-	validSignature : function( publicKey, signature , passphrase, secretKey){ // here is signature a signature  object
+	validSignature : function( publicKey, signature ){ // here is signature a signature  object
         var userPublicKey= signature.user.publicKey;
-        if(secretKey && passphrase){
-          if(userPublicKey != this.RSAdecrypt(passphrase, secretKey, signature.encryptedPublicKey)){
-          	return false
-          }
-        }
-        
         return this.verify(publicKey, userPublicKey, signature.value);
 	},
-	validSignatures : function(publicKey, signatures,passphrase, secretKey){
+	validSignatures : function(publicKey, signatures){
         for(var i=0; i<signatures.length ; i++){
-        	if(!this.validSignature( publicKey,signatures[i], passphrase, secretKey )){
+        	if(!this.validSignature( publicKey,signatures[i] )){
         		return false ;
         		break ;
         	}

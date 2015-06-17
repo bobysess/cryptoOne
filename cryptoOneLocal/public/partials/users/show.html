@@ -12,7 +12,7 @@
 	<button ng-click="sign()">  sign </button>
 	<button  ng-click="revoke()">  Revoke  </button>
 </div>
-
+<!--
 
 <div class="container">
   <h2>common trusted users</h2>
@@ -34,7 +34,74 @@
       </tr>
     </tbody>
   </table>
+</div> -->
+
+<div class="container">
+  <h2> users, who trusts  this user</h2>
+  <p>The list </p>   
+  <h3 ng-if="trustingUsers.length<=0"> leer </h3> 
+  <table class="table table-striped" ng-if="trustingUsers.length>0">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in trustingUsers">
+        <td>{{user.firstname}}</td>
+        <td>{{user.lastname }}</td>
+        <td>{{user.email}}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
+
+<div class="container">
+  <h2> users, who this user trusts</h2>
+  <p>The list </p>   
+  <h3 ng-if="trustedUsers.length<=0"> leer </h3> 
+  <table class="table table-striped" ng-if="trustedUsers.length>0">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in trustedUsers">
+        <td>{{user.firstname}}</td>
+        <td>{{user.lastname }}</td>
+        <td>{{user.email}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="container">
+  <h2> my trusted users, who trusts this user </h2>
+  <p>The list </p>   
+  <h3 ng-if="communTrustingUsers.length<=0"> leer </h3> 
+  <table class="table table-striped" ng-if="communTrustingUsers.length>0">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in communTrustingUsers">
+        <td>{{user.firstname}}</td>
+        <td>{{user.lastname }}</td>
+        <td>{{user.email}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 <!--
 <h2>common trusted users</h2>
 <ul>

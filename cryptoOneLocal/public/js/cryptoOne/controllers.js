@@ -20,6 +20,8 @@
                   }else{
                     return true 
                   }
+                  console.log($scope.untrustedUsers);
+
                 }); // all users
                // filter   users 'from  trusted   users to obtain the untrusted users'
                 $scope.mySignatures.forEach(function (signature){
@@ -62,7 +64,14 @@
                       break ;
                     }
                   }
+                  // list of trusted users
+                  $scope.trustedUsers = [];
+                  for(var i =0; i < $scope.mySignatures.length ; i++){
+                    $scope.trustedUsers.push($scope.mySignatures[i].user);
+                  }
+
                   //common trusted users( my trusted Users, who trust the new users)
+                  /*
                     $scope.mySignatures.forEach(function(signature){
                       Trust.trust(signature.user.id, $scope.showedUser.id, function(result){
                         if(result.data.isTrusted && signature.user.id !=$scope.showedUser.id ){// 
@@ -70,9 +79,26 @@
                         }
                       });
                     });                
-                 //}
+                 //} */
                   
                 });
+                /// list of trusting users
+                $scope.trustingUsers=[];
+                Remote.listOfTrustingUsers (userId , function(users, rep ){
+                  $scope.trustingUsers=users;
+                   // list of my trusted users, who trusts the showed user 
+                   $scope.communTrustingUsers=[];
+                      for(var i =0 ; i<$scope.trustingUsers.length  ;i++){
+                        for (var e =0; e < $scope.mySignatures.length ; e++  ){
+                           if ($scope.mySignatures[e].user.id == $scope.trustingUsers[i].id){
+                             $scope.communTrustingUsers.push ($scope.trustingUsers[i]);
+                           }
+                        };
+                      }
+                   console.log($scope.mySignatures);
+
+                });
+
           });
         
 
@@ -201,7 +227,8 @@
             });
         // list menbers of the groups
           	$scope.menberships=[] ;
-            $scope.trustedUsers= [] 
+            $scope.trustedUsers= [] ;
+            $scope.mySignatures=[];
           	Remote.listOfGroupMenberships( groupId , function ( menberships, rep){
                 $scope.menberships = menberships; //  the  users  informations are located in   menberships 4
                 //search my menbership  for the currengroup
@@ -214,6 +241,7 @@
                 // list of all trusted users for option select to add new Menber
         // get List of trusted user
               Remote.listOfUserSignatures(Session.user.id , function( signatures){
+                $scope.mySignatures = signatures;
                   signatures.forEach(function(signature){
                     $scope.trustedUsers.push(signature.user);
                   });
@@ -282,6 +310,26 @@
               };
               
             }
+            /// list of  my trusted users, who trusts the new Menber candidat in group
+                $scope.trustingUsers=[];
+                $scope.updateTrustingUser= function(){
+                  if ($scope.menber.id){
+                    Remote.listOfTrustingUsers ($scope.menber.id , function(users, rep ){
+                      $scope.trustingUsers=users;
+                       // list of my trusted users, who trusts the showed user 
+                       $scope.communTrustingUsers=[];
+                          for(var i =0 ; i<$scope.trustingUsers.length  ;i++){
+                            for (var e =0; e < $scope.mySignatures.length ; e++  ){
+                               if ($scope.mySignatures[e].user.id == $scope.trustingUsers[i].id){
+                                 $scope.communTrustingUsers.push ($scope.trustingUsers[i]);
+                               }
+                            };
+                          }
+                       console.log($scope.mySignatures);
+
+                    });
+                  }
+                }
     	  // delete menber 
     	      $scope.removeMenber = function (menbership){
               Remote.deleteMenbership(menbership, function(){
@@ -503,7 +551,7 @@
                             }
                         })
 
-                        console.log("successful logged !");
+                        $scope.addAlert("successful logged !");
                         $location.path('/friends');
                       }
                   } 
@@ -554,6 +602,15 @@
                 return true ;
               }
           }
+          //
+          //alert Message
+          $scope.alerts = [];
+          $scope.addAlert = function(msg, type ) {
+            $scope.alerts.push({msg: msg , type : 'danger'});
+          };
+          $scope.closeAlert = function(index) {
+            $scope.alerts.splice(index, 1);
+          };
           
 
     }]); 

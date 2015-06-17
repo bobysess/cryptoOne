@@ -109,7 +109,7 @@ router.put('/:id', function(req, res, next){
    
     //check if the user is initialized
     // by uninitalizerd user generate key pair
-    if(!req.body.isInitialized){
+    if(!req.body.isInitialized && req.body.passphrase && req.body.passphrase){
     	
     	var passphrase= req.body.passphrase;
     	delete req.body.passphrase//delete the passphrase 

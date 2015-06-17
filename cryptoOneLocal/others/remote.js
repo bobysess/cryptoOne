@@ -34,7 +34,12 @@ module.exports={
 			args.headers["Access-Token"]=session.token; //set token
      		client.get(url, args, function(data, response){
      			// check if the user the reponse is correct
-     			menbership=data[0] 
+     			if(Array.isArray(data)){
+     				menbership=data[0] 
+     			}else{
+     				menbership = data;
+     			}
+     			// check if it is existing
      			if (menbership){
      				callback(menbership) // the data are a user object
      			}else{
@@ -51,7 +56,12 @@ module.exports={
 			args.headers["Access-Token"]=session.token; //set token
      		client.get(url, args, function(data, response){
      			// check if the user the reponse is correct 
-     			signature=data[0]
+     			if(Array.isArray(data)){
+     				signature=data[0];
+     			}else{
+     				signature = data;
+     			}
+     			//  exist
      			if (signature){
      				callback(signature) // the data are a user object
      			}else{
@@ -69,7 +79,13 @@ module.exports={
 			args.headers["Access-Token"]=session.token; //set token 
      		client.get(url, args, function(data, response){
      			// check if the user the reponse is correct 
-     			sharedDoc=data[0]
+     			
+     			if(Array.isArray(data)){
+     				sharedDoc=data[0];
+     			}else{
+     				sharedDoc=data;
+     			}
+     			// check if it is existing
      			if (sharedDoc){
      				callback(sharedDoc) // the data are a user object
      			}else{

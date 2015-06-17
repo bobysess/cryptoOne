@@ -3,11 +3,24 @@
 <!-- menbers --> 
 <h1>add menber in group </h1>
 <form >
-		<select ng-model = "menber" class="form-control" ng-options=" user as user.email for user in trustedUsers">
+		<select ng-model = "menber" class="form-control" ng-options=" user as user.email for user in trustedUsers" ng-change="updateTrustingUser()">
 		</select>
 		<input type="submit" ng-click="addMenber()" class="btn btn-default" value="Add" />
 
 </form>
+<!--  list of m --> 
+<div class="container">
+  <h2> my trusted users, who trusts the new menber candidat </h2>
+  <p>The list </p>   
+  <h3 ng-if="communTrustingUsers.length<=0"> leer </h3> 
+  <ul class="table table-striped" ng-if="communTrustingUsers.length>0">
+      <li ng-repeat="user in communTrustingUsers">
+        {{user.firstname}}-
+        {{user.lastname }}-
+        {{user.email}}
+      </li>
+  </ul>
+</div>
 
 <h2> list menbers in group   </h2>
     <!-- <ul>

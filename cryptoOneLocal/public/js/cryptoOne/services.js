@@ -52,10 +52,10 @@
 						// web of trust utils methods
 						 validateSignatures : function( userId, callback){ 
 						 	var data ={};
-						 	if(data.passphrase= window.prompt("passphrase :")){
+						 	//if(data.passphrase= window.prompt("passphrase :")){
 						 		var url = '/users/'+userId+'/validatesignatures'
 						 		return $http.post(url,data).then(callback);
-						 	}
+						 	//}
 						 },
 						 trust : function(userId, otherUserId ,callback){
 						 		var url='/users/'+userId+'/trust/'+otherUserId
@@ -100,6 +100,7 @@
 					     listOfUserSignatures : function(userId, callback){
 					     	Api.UserSignature.query({signorityId : userId}).$promise.then(function(signatures){
 					     		signatures = signatures.filter(function(signature){
+					     										// filter the signature of the user
 													              if(signature.user.id == userId || signature.user.roles == ROLES.AUTHORITY  ||  signature.user.roles == ROLES.ADMIN){
 													                return false 
 													              }else{
@@ -108,6 +109,18 @@
           														});
 					     		callback(signatures)
 					     	});
+					     },
+					     // list all users, who  trusts a user
+					     listOfTrustingUsers : function( userId, callback){
+					     	Api.Signature.query({user_id : userId}).$promise.then(function(signatures){
+					     		var  trustingsUsers =[];
+					     		for(var i =0;  i<signatures.length ; i++ ){
+					     			if (!(signatures[i].signority.id == userId) ){
+					     				trustingsUsers.push(signatures[i].signority);
+					     			}
+					     		}
+					     		callback(trustingsUsers);
+					     	}); 
 					     },
 					     // list all users 
 					     listAllUsers : function(callback){

@@ -61,5 +61,19 @@ length of salt and verifier(-)
 passphrase by login and update of uninitialized users remove(-)
 remove und initialized user, by show all users (-)
 
+todo 
+send password on click in admin
+pop up with list of trusted users  ok 
+shared docs  ok 
+password popup ok 
+list of all people who trusts the users ok 
+list of all people who are trusted by the users ok 
+remove encrypted Public key by Signature ok 
+alert message; 
+error by callback functions
+error in All callback
+delete password
+change the database 
+
 
 
