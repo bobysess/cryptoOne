@@ -16,6 +16,8 @@
   
   // configuration
   app.use(express.static('public'));
+  app.use('/bower_components', express.static(__dirname + '/bower_components'));
+
   app.use(bodyParser.json()); // for parsing application/json
   app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
   app.use(multer()); // for parsing multipart/form-data
@@ -28,13 +30,6 @@
   app.use('/menberships', menbershipsRouter);
   app.use('/', indexRouter);
 
-
-
-
-
-
-
-  
 
   var server = app.listen(3001, function () {
 
